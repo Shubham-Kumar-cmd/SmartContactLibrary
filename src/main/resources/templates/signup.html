@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/" th:replace="~{base::layout(~{::section})}">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+<section>
+    <div class="container my-5">
+        <div class="card col-md-6 offset-md-3 my-card">
+            <div class="card-head pt-3">
+                <div th:if="${session.message}" th:classappend="${session.message.type}" class="alert" role="alert">
+                    <p class="text-center" th:text="${session.message.content}"></p>
+                    <!-- <th:block th:text="${#session.removeAttribute('message')}"></th:block> -->
+                </div>
+                <div class="row text-info">
+                    <div class="col-5 text-right">
+                        <i class="fas fa-user fa-3x"></i>
+                    </div>
+                    <div class="col-7 mt-2">
+                        <h3 class="text-info">Register</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body text-info">
+                <form novalidate="novalidate" action="" th:action="@{/do_register}" method="post" th:object="${user}">
+                    <div class="form-group">
+                        <label for="name_field" id="name">Your Name</label>
+                        <input type="text" name="name" th:classappend="${#fields.hasErrors('name')?'is-invalid':''}" th:value="${user.name}" class="form-control" id="name_field" placeholder="Enter Name" required>
+                        <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" id="validationServer03Feedback" class="alert alert-warning">
+                            
+                        </div>
+                        <div th:unless="${#fields.hasErrors('name')}" th:errors="*{name}" id="validationServer03Feedback" class="alert alert-warning">
+                            
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="email_field" id="name">Email</label>
+                        <input type="email" name="email" th:classappend="${#fields.hasErrors('email')?'is-invalid':''}" th:value="${user.email}" class="form-control" id="email_field" placeholder="Enter Email" required>
+                        <div th:each="e:${#fields.errors('email')}" th:text="${e}" id="validationServer03Feedback" class="alert alert-warning">
+                            
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="password_field" id="password_field">Password</label>
+                        <input type="password" name="password" th:classappend="${#fields.hasErrors('password')?'is-invalid':''}" th:value="${user.password}" class="form-control" id="password_field" placeholder="Enter password" required>
+                        <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" id="validationServer03Feedback" class="alert alert-warning">
+                            
+                        </div>
+                        <div th:unless="${#fields.hasErrors('password')}" th:errors="*{password}" id="validationServer03Feedback" class="alert alert-warning">
+                            
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <textarea name="about" th:text="${user.about}" class="form-control" rows="3" id="text_field" placeholder="Drop your message" required></textarea>
+                    </div>
+                    <div class="form-group form-ckeck">
+                        <input type="checkbox" name="agreement" id="agreement" class="">
+                        <label for="agreement" id="">Agree terms and Conditions</label>
+                    </div>
+                    <div class="container text-center">
+                        <button type="submit" class="btn bg-primary text-white">Submit</button>
+                        <a th:href="@{/signin}" class="btn bg-success text-white">Login</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+</body>
+</html>

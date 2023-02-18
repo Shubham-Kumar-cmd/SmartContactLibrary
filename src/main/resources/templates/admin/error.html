@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/" th:replace="~{base::layout(~{::section})}">
+<head>
+<meta charset="ISO-8859-1">
+<title>Error Page</title>
+</head>
+<body>
+
+<section>
+	<div class="container text-center my-5 col-md-5">
+    <div class="row error">
+        <div class="col-md-12">
+            <div class="error-template">
+                <h1>
+                    Oops!</h1>
+                <h2>
+                    404 Not Found</h2>
+                <div class="error-details">
+                    Sorry, an error has occured, Requested page not found!
+                </div>
+                <div class="error-actions mt-2">
+                    <a th:href="@{/}" href="#" class="btn bg-primary btn-lg text-white"><span class="glyphicon glyphicon-home"></span>Take Me Home </a>
+                    <a href="#" class="btn btn-warning btn-lg"><span class="glyphicon glyphicon-envelope"></span> Contact Support </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</section>
+
+</body>
+</html>
