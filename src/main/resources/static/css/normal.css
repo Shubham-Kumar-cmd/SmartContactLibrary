@@ -67,3 +67,13 @@
 	height:150px;
 	border-radius:50%;
 }
+
+/* search */
+.search-container{
+	position:relative;
+}
+
+.search-result{
+	position:absolute;
+}
+

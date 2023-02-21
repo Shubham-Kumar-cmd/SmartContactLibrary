@@ -39,4 +39,9 @@ public class Contact {
 
     @ManyToOne
     private User user;
+    
+    @Override
+    public boolean equals(Object obj) {
+    	return this.contact_id==((Contact)obj).getContact_id();
+    }
 }

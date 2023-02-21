@@ -17,3 +17,25 @@ const toggleSidebar=()=>{
 tinymce.init({
         selector: '#mytextarea'
       });
+      
+      
+function deleteContact(contact_id){
+		  swal({
+	  title: "Are you sure?",
+	  text: "You want to delete this contact!",
+	  icon: "warning",
+	  buttons: true,
+	  dangerMode: true,
+	  timer: 10000,
+	})
+	.then((willDelete) => {
+	  if (willDelete) {
+	    window.location="/user/delete/"+contact_id;	
+	  } else {
+	    swal("Your contact is safe!");
+	  }
+	});
+  }
+  
+  
+  

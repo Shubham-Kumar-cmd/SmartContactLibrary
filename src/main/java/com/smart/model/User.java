@@ -46,7 +46,7 @@ public class User {
     private String role;
     private boolean enabled;
 
-    @OneToMany(cascade = CascadeType.ALL,mappedBy = "user",fetch= FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true,mappedBy = "user",fetch= FetchType.LAZY)
     private List<Contact> contacts;
     // =List.of();
 }

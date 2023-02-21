@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/" th:replace="~{normal/base::layout(~{::section})}">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+   
+   <section>
+   		<div class="card custom-margin">
+ 	<div class="card-body">
+ 		<h1 class="text-center">Update contact details</h1>
+ 		 <div th:if="${session.message}" th:classappend="${session.message.type}" class="alert" role="alert">
+            <p class="text-center" th:text="${session.message.content}"></p>
+            <!-- <th:block th:text="${#session.removeAttribute('message')}"></th:block> -->
+        </div>
+ 		<div class="container-fluid mt-1">
+ 			<div class="row">
+ 				<div class="col-md-10 offset-md-1">
+ 					<form action="" th:action="@{/user/processupdatecontact}" method="post" enctype="multipart/form-data" th:object="${contact}" class="mt-2">
+ 						<input type="hidden" th:value="${contact.contact_id}" name="contact_id">
+ 						<div class="input-group mb-3">
+							  <div class="input-group-text">
+						  		   <i class="fas fa-plus"></i>
+							  </div>
+						  <input type="text" class="form-control" th:value="${contact.name}" name="name" placeholder="Enter your name">
+						</div>
+						<div class="input-group mb-3">
+							  <div class="input-group-text">
+						  		   <i class="fas fa-user-alt"></i>
+							  </div>
+						  <input type="text" class="form-control" th:value="${contact.nickName}" name="nickName" placeholder="Enter your last name">
+						</div>
+						<div class="input-group mb-3">
+							  <div class="input-group-text">
+						  		   <i class="fa fa-phone"></i>
+							  </div>
+						  <input type="number" class="form-control" th:value="${contact.phone}" name="phone" placeholder="Enter contact number">
+						</div>
+						<div class="input-group mb-3">
+							  <div class="input-group-text">
+						  		   <i class="fa fa-envelope"></i>
+							  </div>
+						  <input type="email" class="form-control" th:value="${contact.email}" name="email" placeholder="Enter email address">
+						</div>
+						<div class="input-group mb-3">
+							  <div class="input-group-text">
+						  		   <i class="fa fa-briefcase"></i>
+							  </div>
+						  <input type="text" class="form-control" th:value="${contact.work}" name="work" placeholder="Enter your work">
+						</div>
+						<div class="input-group mb-3">
+							  <!-- <div class="input-group-text">
+						  		   <i class="fa fa-phone"></i>
+							  </div> -->
+						  <textarea class="form-control" id="mytextarea" th:text="${contact.description}" name="description" placeholder="Enter contact description"></textarea>
+						</div>
+						<div class="custom-file">
+							  <!--  <div class="input-group-text">
+						  		   <i class="fa fa-phone"></i>
+							  </div>-->
+						  <input type="text" name="image">
+						</div>
+						<div class="text-right">
+							<button class="btn bg-primary text-white">Save Contact</button>
+						</div>
+ 					</form>
+ 				</div>
+ 			</div>
+ 		</div>
+ 	</div>
+ </div>
+   </section> 
+
+
+</body>
+</html>

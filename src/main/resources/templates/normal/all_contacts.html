@@ -9,9 +9,24 @@
 <body>
    
    <section>
+   
    		<div class="card custom-margin">
  	<div class="card-body">
+ 	<div th:if="${session.message}" th:classappend="${session.message.type}" class="alert" role="alert">
+       <p class="text-center" th:text="${session.message.content}"></p>
+       <!-- <th:block th:text="${#session.removeAttribute('message')}"></th:block> -->
+   </div>
  		<h1 class="text-center">All contacts</h1>
+ 		
+ 		<!-- search functionality -->
+ 		<div class="search-container my-3">
+              <input id="search-input" class="form-control me-2" type="search" placeholder="Search your contact here" aria-label="Search">
+              
+              <div class="search-result">
+              	<h2>this is search result</h2>
+              	<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. </p>
+              </div>
+        </div>
  		<div class="container-fluid mt-1">
  			<div class="row">
  				<div class="col-md-10 offset-md-1">
@@ -40,8 +55,13 @@
 					      
 					      <td th:text="${e.work}"></td>
 					      <th>
-					      	<button class="btn btn-danger btn-sm">Delete</button>
-					      	<button class="btn bg-primary btn-sm text-white">Update</button>
+					      <!-- making sweet alert using javascript -->
+					      	<!--  <a th:href="@{'/user/delete/'+${e.contact_id}}" class="btn btn-danger btn-sm">Delete</a>-->
+					      	<a href="#" th:onclick="|deleteContact(${e.contact_id})|" class="btn btn-danger btn-sm">Delete</a>
+					      	
+					      	<form th:action="@{'/user/updatecontact/'+${e.contact_id}}" method="post" class="mt-2">
+			      				<button type="submit" class="btn bg-primary btn-sm text-white">Update</button>
+			      			</form>
 					      </th>
 					    </tr>
 					    

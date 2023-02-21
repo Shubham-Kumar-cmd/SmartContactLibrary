@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +15,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.smart.helper.Message;
 import com.smart.model.Contact;
@@ -132,12 +133,101 @@ public class UserController {
     
     //show particular contact detail handler
     @GetMapping("/{contact_id}/contact")
-    public String showDetails(@PathVariable("contact_id") Integer cId,Model model) {
+    public String showDetails(@PathVariable("contact_id") Integer cId,Model model,Principal principal) {
     	model.addAttribute("title", "Show Detail");
     	Optional<Contact> contactId = this.contactRepository.findById(cId);
     	Contact contact = contactId.get();
-    	model.addAttribute("contact", contact);
+    	
+    	String name = principal.getName();
+    	User user = this.userRepository.getUserByUserNameUser(name);
+    	if(user.getUser_id()==contact.getUser().getUser_id()) {
+    		model.addAttribute("contact", contact);
+    	}
     	return "normal/show_detail";
+    }
+    
+    //delete particular contact detail handler
+    @GetMapping("/delete/{contact_id}")
+    public String deleteContact(@PathVariable("contact_id") Integer cid,Model model,Principal principal,HttpSession session) {
+    		Optional<Contact> contactOptional = this.contactRepository.findById(cid);
+    		Contact contact = contactOptional.get();
+    		System.out.println("contact "+contact);
+    		
+    		String name = principal.getName();
+    		User user = this.userRepository.getUserByUserNameUser(name);
+    		
+    		if(user.getUser_id()==contact.getUser().getUser_id()) {
+    			boolean deleted = user.getContacts().remove(contact);
+    			this.userRepository.save(user);
+    			System.out.println("DELETED "+deleted);
+    			session.setAttribute("message", new Message("contact deleted successfully", "alert-success"));
+    		}
+    	return "redirect:/user/showcontacts/0";
+    }
+    
+    //update particular contact detail handler
+    @PostMapping("/updatecontact/{contact_id}")
+    public String updateContact(@PathVariable("contact_id") Integer cid, Model model,HttpSession session) {
+    	
+    	Optional<Contact> findById = this.contactRepository.findById(cid);
+    	Contact contact = findById.get();
+    	model.addAttribute("title", "Update Contact Details");
+    	model.addAttribute("contact", contact);
+    	session.setAttribute("message", new Message("Updated Successfully", "alert-success"));
+    	return "normal/update_contact";
+    }
+    
+    //update contact details handler
+    @PostMapping("/processupdatecontact")
+    public String processContactUpdate(@ModelAttribute Contact contact,
+    		//@RequestParam("image") MultipartFile file,
+    		Principal principal,
+    		HttpSession session) {
+    	try {
+			System.out.println(contact.getEmail());
+			System.out.println(contact.getContact_id());
+			System.out.println(contact.getName());
+			
+			String name = principal.getName();
+        	User user = userRepository.getUserByUserNameUser(name);
+        	
+        	//processing and file uploading
+        	//not working
+        	/*if(file.isEmpty()) {
+        		//file is empty show some message to the user
+        		System.out.println("file is empty");
+        		
+        		contact.setImage("contact.png");//we have to set manually if user not add the image
+        		
+        	}else {
+        		//upload the file to folder and update the contact with file url in database
+        		contact.setImage(file.getOriginalFilename());
+        		File saveFile = new ClassPathResource("static/img").getFile();
+        		Path path = Paths.get(saveFile.getAbsolutePath()+File.separator+file.getOriginalFilename());
+        		long copy = Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+        		System.out.println("file upload "+copy);
+        	}*/
+        	
+        	contact.setUser(user);
+        	contactRepository.save(contact);
+        	System.out.println("contact data updated to database");
+        	System.out.println("data "+contact);
+        	session.setAttribute("message", new Message("Contact Updated successfully","alert-success"));
+		} catch (Exception e) {
+			e.printStackTrace();
+			session.setAttribute("message", new Message("Something went wrong!! please try again","alert-danger"));
+		}
+    	return "redirect:/user/"+contact.getContact_id()+"/contact";
+    }
+    
+    //user profile handler
+    @GetMapping("/profile")
+    public String userProfile(Model model,Principal principal) {
+    	String name = principal.getName();
+    	User user = userRepository.getUserByUserNameUser(name);
+    	model.addAttribute("title", "User Profile");
+    	model.addAttribute("profile", user);
+    	return "normal/user_profile";
     }
     
 }
