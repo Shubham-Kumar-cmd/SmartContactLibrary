@@ -76,6 +76,7 @@ public class UserController {
     		String name = principal.getName();
         	User user = userRepository.getUserByUserNameUser(name);
         	
+        	
         	//processing and file uploading
         	//not working
         	/*if(file.isEmpty()) {

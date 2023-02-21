@@ -1,5 +1,6 @@
 console.log("this is js file");
 
+//used for mobile screen size
 const toggleSidebar=()=>{
 
     if($(".sidebar").is(":visible")){
@@ -18,7 +19,7 @@ tinymce.init({
         selector: '#mytextarea'
       });
       
-      
+//used for delete contact      
 function deleteContact(contact_id){
 		  swal({
 	  title: "Are you sure?",
@@ -38,4 +39,51 @@ function deleteContact(contact_id){
   }
   
   
+const search=()=>{
+	let query=$("#search-input").val();
+	if(query==''){
+		$(".search-result").hide();
+	}
+	else{
+		//searching
+		//console.log(query);
+		
+		//sending request to server
+		let url=`http://localhost:8083/search/${query}`;
+		fetch(url)
+		  .then((response) => response.json())
+		  .then((data) => {console.log(data)
+		  
+		  let text=`<div class='list-group'>`;
+		  
+		  data.forEach((contact)=>{
+			  text+=`<a href='/user/${contact.contact_id}/contact' class='list-group-item list-group-item-action'>${contact.name}</a>`
+		  });
+		  
+		  text+=`</div>`;
+		  
+		  $(".search-result").html(text);
+		  $(".search-result").show();
+		  });
+				
+		
+	}
+}; 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   
