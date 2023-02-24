@@ -12,7 +12,9 @@ public class SmartContactLibraryApplication {
 	
 	/*
 	 * kumar53shubham@gmail.com password is qwerty
-	 * kanksha@gmail.com passwors is asdfgh
+	 * kanksha@gmail.com password is asdfgh
+	 * shubhamburnwal.53@gmail.com password is qazwsx
+	 * kush@gmail.com password is zxcvbn
 	 * */
 
 }

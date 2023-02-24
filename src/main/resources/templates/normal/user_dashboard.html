@@ -11,13 +11,28 @@
    <section>
    		<div class="container">
 			<div class="card-head text-center mt-3">
+			<div th:if="${session.message}" th:classappend="${session.message.type}" class="alert" role="alert">
+		       <p class="text-center" th:text="${session.message.content}"></p>
+		       <!-- <th:block th:text="${#session.removeAttribute('message')}"></th:block> -->
+		   </div>
 				<img class="my-profile" alt="profile_photo" src="" th:src="@{'/img/dashboard.png'}">
 				<h2 class="mt-3"><span th:text="${user.name}"></span></h2>
 				<h1 class="text-secondary font-italic">Start adding your contact on cloud..</h1>
 				<a th:href="@{/user/addcontact}" class="btn btn-primary btn-block text-white">Add new contact</a>
 			</div>
    		</div>
+   		
+	<script>
+	 //used for sidebar hover
+	   $(document).ready(()=>{
+	   	$(".item").removeClass("active");
+	   	$("#home-link").addClass("active");
+	   });
+   </script>
+   
    </section> 
+   
+  
 
 
 </body>

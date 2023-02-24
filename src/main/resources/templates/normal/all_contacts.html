@@ -27,11 +27,15 @@
               <h2>This is search engine</h2>
               </div>
         </div>
+        <!-- search functionality end -->
+        
+        
  		<div class="container-fluid mt-1">
  			<div class="row">
  				<div class="col-md-10 offset-md-1">
- 					<table class="table">
-					  <thead>
+ 				<div class="table-responsive-sm">
+ 					<table class="table table-hover">
+					  <thead class="thead-light">
 					    <tr>
 					      <th scope="col">Id</th>
 					      <th scope="col">Name</th>
@@ -68,6 +72,8 @@
 					  </tbody>
 					</table>
 					
+					</div>
+					
 					<!-- Pagination -->
 					<nav aria-label="Page navigation example">
 					  <ul class="pagination">
@@ -82,6 +88,14 @@
  		</div>
  	</div>
  </div>
+ 
+ <script>
+	 //used for sidebar hover
+	   $(document).ready(()=>{
+	   	$(".item").removeClass("active");
+	   	$("#view-link").addClass("active");
+	   });
+   </script>
    </section> 
 
 

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,6 +31,9 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 @RequestMapping("/user")
 public class UserController {
+	
+	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	
 	@Autowired
 	private UserRepository userRepository;
@@ -229,6 +233,39 @@ public class UserController {
     	model.addAttribute("title", "User Profile");
     	model.addAttribute("profile", user);
     	return "normal/user_profile";
+    }
+    
+    //user setting handler
+    @GetMapping("/settings")
+    public String openSetting(Model model) {
+    	model.addAttribute("title", "Change your profile");
+    	return "normal/settings";
+    }
+    
+    //processing changepassword handler
+    @PostMapping("/changepassword")
+    public String changePassword(@RequestParam("oldPassword") String oldPassword,@RequestParam("newPassword") String newPassword,Principal principal,HttpSession session) {
+    	System.out.println("oldPwd "+oldPassword);
+    	System.out.println("newPwd "+newPassword);
+    	
+    	String name = principal.getName();
+    	User user = this.userRepository.getUserByUserNameUser(name);
+    	
+    	String password = user.getPassword();
+    	
+    	if(this.bCryptPasswordEncoder.matches(oldPassword, password)) {
+    		//change the password
+    		user.setPassword(this.bCryptPasswordEncoder.encode(newPassword));
+    		this.userRepository.save(user);
+    		session.setAttribute("message", new Message("Password updated successfully", "alert-success"));
+    	}
+    	else {
+    		//throw error
+    		session.setAttribute("message", new Message("Invalid old password", "alert-danger"));
+    		return "redirect:/user/settings";
+    	}
+    	
+    	return "redirect:/user/index";
     }
     
 }

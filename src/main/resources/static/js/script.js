@@ -38,7 +38,7 @@ function deleteContact(contact_id){
 	});
   }
   
-  
+//used for search contact  
 const search=()=>{
 	let query=$("#search-input").val();
 	if(query==''){
