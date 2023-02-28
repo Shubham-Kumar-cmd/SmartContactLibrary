@@ -103,7 +103,7 @@ const paymentStart=()=>{
 				    currency: "INR",
 				    name: "Smart Contact Library",
 				    description: "Donation",
-				    image: "https://www.amazon.in/ref=nav_logo",
+				    image: "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdcassetcdn.com%2Fdesign_img%2F913364%2F202687%2F202687_5387656_913364_image.jpg&imgrefurl=https%3A%2F%2Fwww.designcrowd.com%2Fdesign%2F5387656&tbnid=h5I6cf4geFg6mM&vet=12ahUKEwjQ04q6kLX9AhXU_zgGHTXADmMQMygBegUIARCwAQ..i&docid=84fd_pWdHp-keM&w=1200&h=840&q=shubham%20hardware%20logo&ved=2ahUKEwjQ04q6kLX9AhXU_zgGHTXADmMQMygBegUIARCwAQ",
 				    order_id: response.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
 				    handler: function (response){
 				        console.log(response.razorpay_payment_id);
@@ -111,7 +111,13 @@ const paymentStart=()=>{
 				        console.log(response.razorpay_signature);
 				        console.log('payment successful');
 				        //alert('payment successful');
-				        swal("Good job!", "congrats !! payment successful!", "success");
+				        
+				        updatePaymentOnSuccess(
+							response.razorpay_payment_id,
+							response.razorpay_order_id,
+							'paid'
+						);	
+				        //swal("Good job!", "congrats !! payment successful!", "success");
 				    },
 				    prefill: {
 				        name: "Gaurav Kumar",
@@ -155,7 +161,21 @@ const paymentStart=()=>{
 };
 
 
-
+function updatePaymentOnSuccess(payment_id,order_id,status){
+	$.ajax({
+		url:'/user/update-order',
+		data:JSON.stringify({payment_id:payment_id,order_id:order_id,status:status}),
+		contentType:'application/json',
+		type:'POST',
+		dataType:'json',
+		success:function(response){
+			swal("Good job!", "congrats !! payment successful!", "success");
+		},
+		error:function(error){
+			swal("Failed!", "Your payment is successful, but there is problem with server", "error");
+		}
+	});
+}
 
 
 
